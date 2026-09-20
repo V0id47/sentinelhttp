@@ -35,11 +35,12 @@ after use. Findings are configuration observations, not proof of exploitation.
 **Evidence.** Local fixtures and fake DNS/dialers exercise scope decisions,
 timeouts, hostile HTTP, privacy projections and output escaping without
 scanning public targets. Phase 19 added parser fuzzing and a browser check
-with injected markup rendered as text. Phase 20 recorded 342 passing
-top-level Go tests across 17 packages, 87.5% weighted statement coverage,
+with injected markup rendered as text. The release gate recorded 342 passing
+top-level Go tests across 17 packages, 87.6% weighted statement coverage,
 zero findings from point-in-time npm and Go vulnerability audits, and a
-deterministic frontend/catalog rebuild. Linux CI contains the race test; its
-actual release result is recorded during publication.
+deterministic frontend/catalog rebuild. The published
+[Linux CI run](https://github.com/V0id47/sentinelhttp/actions/runs/35504147285)
+passed the race detector and dependency gates.
 
 **Next review areas.** Maintaining special-use IP classifications, PSL and
 trust roots; validating the CI race/dependency gates on each change; and
@@ -49,5 +50,5 @@ authenticated scanning, crawling and exploit claims.
 
 The [architecture self-review](architecture-self-review.md) records concrete
 risks found and resolved during development. The [threat model](threat-model.md)
-and [phase reports](phase20-report.md) contain the detailed decisions and gate
-evidence.
+and [release report](phase22-report.md) contain the detailed decisions and
+gate evidence.

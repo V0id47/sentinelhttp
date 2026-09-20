@@ -96,4 +96,6 @@ use `--lang es|ru|zh-CN` for CLI output. JSON remains language-neutral.
 
 For CLI limits and exit codes, see [CLI](docs/cli.md). For development and
 testing, see [development](docs/development.md). For the design rationale and
-portfolio case study, see [project story](docs/portfolio.md).
+portfolio case study, see [project story](docs/portfolio.md). The
+[v0.1.0 release notes](docs/release-notes-v0.1.0.md) and
+[release evidence](docs/release-readiness.md) record the completed gates.
