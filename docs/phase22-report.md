@@ -28,6 +28,12 @@ first push. The published dashboard was visually checked at 1366×768 and
 inside the viewport. Those interactive checks are observations, not automated
 visual regression tests.
 
+The final documentation pass added a synthetic [screenshot gallery](screenshots.md)
+and [interview review](interview-review.md). ESLint now checks frontend source
+and Gitleaks scans full Git history in CI. A local Gitleaks run examined the
+first two public commits (about 1.63 MB) and found no leaks. This supplements
+the initial staged secret-pattern review; it cannot prove secrets are absent.
+
 No public service was scanned as a release test. The [readiness matrix](release-readiness.md)
 lists the acceptance gates, and the [architecture self-review](architecture-self-review.md)
 records residual security and maintenance risks. The software makes bounded

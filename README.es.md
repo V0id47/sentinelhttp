@@ -77,9 +77,10 @@ su [autoevaluación](docs/architecture-self-review.md) y el
 [caso de portfolio](docs/portfolio.md).
 
 ```console
-go test ./...
-go vet ./...
+go test ./cmd/... ./internal/... ./tools/...
+go vet ./cmd/... ./internal/... ./tools/...
 npm ci --prefix frontend
+npm run lint --prefix frontend
 npm run build --prefix frontend
 ```
 
@@ -90,3 +91,12 @@ para ejecutar `go test -race` localmente. La presentación admite inglés,
 español, ruso y chino simplificado; el JSON no cambia con `--lang`.
 [Opciones y códigos de salida](docs/cli.md) ·
 [Guía de desarrollo](docs/development.md).
+
+[Capturas del panel](docs/screenshots.md) ·
+[Repaso para entrevistas](docs/interview-review.md) ·
+[Evidencia de publicación](docs/release-readiness.md).
+
+## Licencia
+
+No se eligió una licencia de código abierto para v0.1.0. El código público se
+puede leer y revisar; reutilizarlo requiere permiso del autor.

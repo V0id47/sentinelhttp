@@ -12,6 +12,9 @@ assessment tool for authorized targets.
 - Versioned JSON plus terminal, Markdown and HTML reports; conservative diff
   for compatible root scans; local loopback dashboard with bundled assets.
 - Human presentation in English, Spanish, Russian and Simplified Chinese.
+- Synthetic [dashboard screenshots](screenshots.md), an
+  [interview review](interview-review.md), frontend ESLint and Git-history
+  secret scanning in CI.
 
 The [quick start](../README.md) and [installation guide](install.md) explain
 usage and platform requirements. On Windows, macOS and iOS, HTTPS scanning

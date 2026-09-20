@@ -1,4 +1,4 @@
-# Core architecture — through Phase 20
+# Core architecture — v0.1.0
 
 This document preserves the detailed phase-by-phase design and describes the
 implemented product. The network boundary is the only outbound scan socket
@@ -75,7 +75,8 @@ go.mod records the language floor and exact dependency versions:
 golang.org/x/net v0.59.0 (IDNA and the compiled Public Suffix List) and x/text
 v0.42.0 (transitive). Phase 7 uses the PSL snapshot already shipped in that pinned
 x/net module; Phase 8 adds no module dependency.
-No system PATH changes, Git initialization, remote repository or release.
+No system PATH changes were required. Git initialization and public release
+followed only after the Phase 22 acceptance gate.
 
 ## Phase 4 adapter
 

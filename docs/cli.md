@@ -1,4 +1,4 @@
-# CLI scan contract (through Phase 20)
+# CLI scan contract — v0.1.0
 
 `sentinelhttp scan TARGET` performs one bounded GET by default. It does not
 follow redirects, crawl, send credentials or perform CORS probes unless an

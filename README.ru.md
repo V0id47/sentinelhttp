@@ -75,9 +75,10 @@ go run ./cmd/sentinelhttp scan http://127.0.0.1:8080/ --allow-private --trace-re
 [описание проекта](docs/portfolio.md).
 
 ```console
-go test ./...
-go vet ./...
+go test ./cmd/... ./internal/... ./tools/...
+go vet ./cmd/... ./internal/... ./tools/...
 npm ci --prefix frontend
+npm run lint --prefix frontend
 npm run build --prefix frontend
 ```
 
@@ -86,3 +87,12 @@ npm run build --prefix frontend
 зависимостей; на локальной Windows-машине нет C-компилятора для `go test -race`.
 Интерфейс поддерживает английский, испанский, русский и упрощённый китайский;
 `--lang` не изменяет JSON. [CLI](docs/cli.md) · [Разработка](docs/development.md).
+
+[Снимки панели](docs/screenshots.md) ·
+[Вопросы для интервью](docs/interview-review.md) ·
+[Проверка релиза](docs/release-readiness.md).
+
+## Лицензия
+
+Для v0.1.0 не выбрана лицензия с открытым исходным кодом. Общедоступный код
+можно читать и проверять; повторное использование требует разрешения автора.

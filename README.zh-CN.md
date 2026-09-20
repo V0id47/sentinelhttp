@@ -62,9 +62,10 @@ React/TypeScript 前端内嵌于 Go 程序，无需 CDN。
 [作品集案例](docs/portfolio.md)。
 
 ```console
-go test ./...
-go vet ./...
+go test ./cmd/... ./internal/... ./tools/...
+go vet ./cmd/... ./internal/... ./tools/...
 npm ci --prefix frontend
+npm run lint --prefix frontend
 npm run build --prefix frontend
 ```
 
@@ -72,3 +73,11 @@ npm run build --prefix frontend
 和依赖安全审计；开发所用 Windows 机器缺少运行本地 `go test -race` 的 C 编译器。
 界面支持英语、西班牙语、俄语和简体中文；`--lang` 不改变 JSON。
 [CLI 说明](docs/cli.md) · [开发说明](docs/development.md)。
+
+[仪表盘截图](docs/screenshots.md) ·
+[面试问答](docs/interview-review.md) ·
+[发布验证](docs/release-readiness.md)。
+
+## 许可
+
+v0.1.0 尚未选择开源许可证。公开代码可供阅读和审查；重用需要作者许可。

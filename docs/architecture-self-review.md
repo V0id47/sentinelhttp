@@ -49,6 +49,7 @@ unknown or tampered text stays visible as untrusted source text.
 | Medium | Frontend catalog and embedded Vite assets can drift from Go source. | CI installs from the lockfile, regenerates all five artifacts and rejects a Git diff. Review source and generated output together. |
 | Low | Parser fuzzing was brief and reached a plateau. | Keep deterministic hostile fixtures and expand fuzz duration/corpus when parser rules change; fuzz success is not a resource guarantee. |
 | Low | GitHub Actions and the runner are external release dependencies. | Read-only CI permissions, no persisted checkout credentials, dependency audits and a green Linux race run are release gates. Review action revisions and runner migrations regularly. |
+| Low | v0.1.0 uses CLI flags rather than the originally proposed TOML config file. | Effective non-secret options are recorded in the report; a future config file needs strict keys, explicit precedence and a separate privacy/security design. |
 
 The Windows-only protected-file adapter uses `syscall`/`unsafe` and is the sole
 exception to the source guard against new socket-capable imports. Keep that

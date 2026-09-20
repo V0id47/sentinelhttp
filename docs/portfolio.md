@@ -51,4 +51,5 @@ authenticated scanning, crawling and exploit claims.
 The [architecture self-review](architecture-self-review.md) records concrete
 risks found and resolved during development. The [threat model](threat-model.md)
 and [release report](phase22-report.md) contain the detailed decisions and
-gate evidence.
+gate evidence. [Dashboard screenshots](screenshots.md) and the
+[interview review](interview-review.md) use local synthetic evidence.

@@ -61,6 +61,13 @@ its own authenticity. [Report contract](docs/reporting.md) ·
 [Scoring](docs/scoring.md) · [Diff](docs/diff.md) ·
 [Dashboard](docs/dashboard.md).
 
+## Dashboard preview
+
+![Overview from a synthetic local report](docs/images/overview.png)
+
+The [screenshot gallery](docs/screenshots.md) also shows finding details and
+the before/after diff. All captures use local synthetic fixtures.
+
 ## Architecture and verification
 
 ```mermaid
@@ -81,9 +88,10 @@ engine do not open network connections. See the
 and [security model](docs/security.md).
 
 ```console
-go test ./...
-go vet ./...
+go test ./cmd/... ./internal/... ./tools/...
+go vet ./cmd/... ./internal/... ./tools/...
 npm ci --prefix frontend
+npm run lint --prefix frontend
 npm run build --prefix frontend
 ```
 
@@ -99,3 +107,10 @@ testing, see [development](docs/development.md). For the design rationale and
 portfolio case study, see [project story](docs/portfolio.md). The
 [v0.1.0 release notes](docs/release-notes-v0.1.0.md) and
 [release evidence](docs/release-readiness.md) record the completed gates.
+The [interview review](docs/interview-review.md) explains the main design
+decisions and limits.
+
+## License
+
+No open-source license has been selected for v0.1.0. The public source may be
+read and reviewed; reuse requires the author's permission.
