@@ -39,7 +39,7 @@ with injected markup rendered as text. The release gate recorded 342 passing
 top-level Go tests across 17 packages, 87.6% weighted statement coverage,
 zero findings from point-in-time npm and Go vulnerability audits, and a
 deterministic frontend/catalog rebuild. The published
-[Linux CI run](https://github.com/V0id47/sentinelhttp/actions/runs/35504147285)
+[Linux CI run](https://github.com/V0id47/sentinelhttp/actions/runs/35505265003)
 passed the race detector and dependency gates.
 
 **Next review areas.** Maintaining special-use IP classifications, PSL and

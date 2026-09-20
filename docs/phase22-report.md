@@ -8,6 +8,10 @@ Its [CI run 35504147285](https://github.com/V0id47/sentinelhttp/actions/runs/355
 completed successfully on Linux, including the race detector and npm/Go
 vulnerability audits. GitHub's notice about a future `ubuntu-latest` image
 migration was informational and did not fail the run.
+The later code-bearing commit
+[`c45b7f0`](https://github.com/V0id47/sentinelhttp/commit/c45b7f091b606f97396ada1bc92b3b97be847f29)
+passed the [enhanced CI run 35505265003](https://github.com/V0id47/sentinelhttp/actions/runs/35505265003),
+which also runs ESLint and Gitleaks over full Git history.
 
 ## Acceptance evidence
 
@@ -31,7 +35,7 @@ visual regression tests.
 The final documentation pass added a synthetic [screenshot gallery](screenshots.md)
 and [interview review](interview-review.md). ESLint now checks frontend source
 and Gitleaks scans full Git history in CI. A local Gitleaks run examined the
-first two public commits (about 1.63 MB) and found no leaks. This supplements
+three public commits (about 1.68 MB) and found no leaks. This supplements
 the initial staged secret-pattern review; it cannot prove secrets are absent.
 
 No public service was scanned as a release test. The [readiness matrix](release-readiness.md)
