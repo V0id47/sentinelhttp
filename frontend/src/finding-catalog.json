@@ -1,0 +1,151 @@
+[
+  {
+    "rule_id": "headers.hsts_not_active",
+    "rule_version": "1",
+    "observation": "At least one captured, applicable HTTPS response did not establish an active HSTS policy.",
+    "inference": "The observed response does not itself instruct compatible browsers to require HTTPS for this host.",
+    "hypothesis": "A browser without an existing HSTS policy could make a later HTTP request to this host.",
+    "impact": "Such a request could lose transport protection if the surrounding deployment permits HTTP.",
+    "remediation": "Review the host's HTTPS policy and serve a valid positive Strict-Transport-Security max-age where appropriate.",
+    "limitations": [
+      "This is one response, not a survey of every route or browser state.",
+      "Preload enrollment is not assessed."
+    ]
+  },
+  {
+    "rule_id": "headers.nosniff_absent",
+    "rule_version": "1",
+    "observation": "At least one captured HTML or JSON response did not include X-Content-Type-Options.",
+    "inference": "The observed response lacks this browser MIME-type hardening signal.",
+    "hypothesis": "Some clients may apply their own content-type interpretation in contexts where this header matters.",
+    "impact": "The absence may reduce defense in depth, depending on content and browser behavior.",
+    "remediation": "Consider X-Content-Type-Options: nosniff alongside correct Content-Type values.",
+    "limitations": [
+      "No MIME confusion or executable-content path was demonstrated."
+    ]
+  },
+  {
+    "rule_id": "cookies.session_like_no_secure",
+    "rule_version": "1",
+    "observation": "An accepted cookie that appears session-like was observed without the Secure attribute on HTTPS.",
+    "inference": "The cookie may be sent on an HTTP request if the browser later makes one within its scope.",
+    "hypothesis": "If the cookie carries sensitive state, an unprotected request could expose that state.",
+    "impact": "Potential transport exposure depends on cookie purpose, browser behavior and whether HTTP is reachable.",
+    "remediation": "Set Secure on cookies that carry session or other sensitive state.",
+    "limitations": [
+      "Session-like classification is a name/lifetime heuristic, not proof of authentication.",
+      "Cookie values are not retained or inspected."
+    ]
+  },
+  {
+    "rule_id": "cookies.session_like_no_httponly",
+    "rule_version": "1",
+    "observation": "An accepted cookie that appears session-like was observed without the HttpOnly attribute on HTTPS.",
+    "inference": "The observed cookie is not marked to restrict script access through HttpOnly.",
+    "hypothesis": "If the cookie carries sensitive state and script execution is possible, that state could be exposed.",
+    "impact": "Potential impact depends on cookie purpose and an independent script-execution condition.",
+    "remediation": "Set HttpOnly on session or other sensitive cookies that do not require script access.",
+    "limitations": [
+      "This does not establish XSS or prove that the cookie authenticates a user."
+    ]
+  },
+  {
+    "rule_id": "csp.no_complete_enforcement",
+    "rule_version": "1",
+    "observation": "No complete enforced CSP policy was observed for an applicable HTML response.",
+    "inference": "The captured CSP fields do not establish an analyzable enforced policy for this response.",
+    "hypothesis": "A suitable enforced policy could add defense in depth for this document.",
+    "impact": "The effect depends on the document, scripts and other controls.",
+    "remediation": "Review whether an enforced Content-Security-Policy is appropriate and deploy a tested policy.",
+    "limitations": [
+      "This is not proof of XSS and does not account for document content or meta policies."
+    ]
+  },
+  {
+    "rule_id": "csp.unsafe_inline_observed",
+    "rule_version": "1",
+    "observation": "One enforced CSP policy has an effective unsafe-inline source within a parsed control.",
+    "inference": "That policy's selected control permits the observed inline script or style behavior under the parser's narrow conditions.",
+    "hypothesis": "A stricter policy could narrow the allowed inline behavior.",
+    "impact": "Actual behavior depends on all enforced policies and document content.",
+    "remediation": "Review inline script/style needs and prefer a tested restrictive policy where practical.",
+    "limitations": [
+      "Other enforced policies may further restrict the combined result.",
+      "No XSS or browser execution was demonstrated."
+    ]
+  },
+  {
+    "rule_id": "csp.unsafe_eval_observed",
+    "rule_version": "1",
+    "observation": "One enforced CSP policy includes unsafe-eval in a parsed script control.",
+    "inference": "That policy does not restrict the affected evaluation behavior by itself.",
+    "hypothesis": "Removing unsafe-eval could strengthen defense in depth after compatibility testing.",
+    "impact": "The effect depends on all enforced policies and application code.",
+    "remediation": "Review dynamic code-evaluation needs and remove unsafe-eval if compatible.",
+    "limitations": [
+      "Other enforced policies may narrow the combined result.",
+      "No XSS was demonstrated."
+    ]
+  },
+  {
+    "rule_id": "cors.sampled_reflection_with_credentials",
+    "rule_version": "1",
+    "observation": "Two synthetic origins were echoed with credential allowance in captured CORS samples.",
+    "inference": "The sampled responses are consistent with permissive credentialed CORS behavior.",
+    "hypothesis": "An authorized manual review could determine whether a sensitive authenticated resource is affected.",
+    "impact": "Exposure would depend on real credentials, resource sensitivity and browser behavior.",
+    "remediation": "Review the origin allowlist and credential policy for resources carrying sensitive data.",
+    "limitations": [
+      "Only two fixed, unauthenticated origins were sampled.",
+      "No confirmed data exposure is claimed."
+    ]
+  },
+  {
+    "rule_id": "cors.vary_origin_shared_cache",
+    "rule_version": "1",
+    "observation": "A sampled origin-varying CORS response lacked Vary: Origin and advertised shared-cache freshness.",
+    "inference": "A shared cache could reuse a response across Origin request values under some deployments.",
+    "hypothesis": "Manual cache testing could determine whether this creates an observable mismatch.",
+    "impact": "Impact depends on the actual cache path, resource sensitivity and response handling.",
+    "remediation": "Review Vary: Origin and shared-cache policy for origin-dependent responses.",
+    "limitations": [
+      "No shared cache was exercised and no data leak was demonstrated."
+    ]
+  },
+  {
+    "rule_id": "redirects.https_to_http_proposed",
+    "rule_version": "1",
+    "observation": "A captured HTTPS redirect proposed an HTTP destination; SentinelHTTP blocked the next request.",
+    "inference": "A client that follows that Location could transition to an unencrypted URL.",
+    "hypothesis": "The redirect may weaken transport protection for clients that do not block the downgrade.",
+    "impact": "Potential impact depends on client behavior and the destination's actual service.",
+    "remediation": "Review the redirect target and prefer an HTTPS destination where available.",
+    "limitations": [
+      "The proposed HTTP destination was not requested by SentinelHTTP."
+    ]
+  },
+  {
+    "rule_id": "redirects.loop_or_limit",
+    "rule_version": "1",
+    "observation": "The captured redirect journey stopped at an exact loop or configured redirect limit.",
+    "inference": "The observed chain did not reach a terminal non-redirect response within this operation.",
+    "hypothesis": "Some clients may experience failed or excessive navigation for this path.",
+    "impact": "This may affect availability or usability for the observed request journey.",
+    "remediation": "Review the redirect chain and remove loops or unnecessary hops.",
+    "limitations": [
+      "A configured limit is not proof that every client loops or fails."
+    ]
+  },
+  {
+    "rule_id": "tls.leaf_expiring_soon",
+    "rule_version": "1",
+    "observation": "The verified TLS connection presented a leaf certificate expiring within 30 days of observation.",
+    "inference": "Certificate renewal may be needed soon to maintain successful validation.",
+    "hypothesis": "If it is not renewed, future clients could reject the service after expiry.",
+    "impact": "Availability and trust effects depend on renewal and client trust configuration.",
+    "remediation": "Check the renewal schedule and deploy a replacement certificate before expiry.",
+    "limitations": [
+      "This is one verified connection at a captured instant; revocation was not checked."
+    ]
+  }
+]

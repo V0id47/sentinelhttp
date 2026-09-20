@@ -1,0 +1,15 @@
+/coverage*
+/artifacts/
+/frontend/node_modules/
+/frontend/.vite/
+/.superpowers/
+/docs/superpowers/
+/.cache/
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.pfx
+*.test
+*.exe

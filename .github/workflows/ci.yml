@@ -1,0 +1,61 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-go@v7
+        with:
+          go-version: '1.27.1'
+          cache: false
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          package-manager-cache: false
+
+      - name: Install frontend dependencies
+        run: npm ci --prefix frontend
+
+      - name: Regenerate catalogs and dashboard assets
+        run: |
+          go run ./tools/cataloggen frontend/src/finding-catalog.json
+          npm run build --prefix frontend
+          git diff --exit-code -- frontend/src/finding-catalog.json internal/core/localization/catalog.json internal/dashboard/static
+
+      - name: Check documentation links
+        run: node tools/check-doc-links.mjs
+
+      - name: Verify Go modules and formatting
+        run: |
+          go mod verify
+          test -z "$(gofmt -l cmd internal tools)"
+
+      - name: Test and inspect Go
+        run: |
+          go test ./... -count=1
+          go test -race ./... -count=1
+          go vet ./...
+          go build ./...
+
+      - name: Audit dependencies
+        run: |
+          npm audit --prefix frontend --audit-level=high
+          go run golang.org/x/vuln/cmd/govulncheck@v1.8.0 ./...
