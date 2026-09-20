@@ -22,5 +22,4 @@ requires an explicit PEM CA bundle. Report files can contain sensitive origin,
 certificate and cookie-name metadata. Findings are configuration observations,
 not proof of exploitation or a full-site security verdict.
 
-The [release readiness matrix](release-readiness.md) and
-[Phase 22 report](phase22-report.md) record local and Linux CI verification.
+The [release readiness matrix](release-readiness.md) records local and Linux CI verification.

@@ -1,4 +1,4 @@
-# CSP policy analysis — Phase 8
+# CSP policy analysis
 
 Implemented 2026-09-18 in `internal/core/cspanalysis`. This pure, deterministic
 package analyzes bounded header-delivered Content Security Policy evidence. It is
@@ -135,14 +135,14 @@ conclusions and is an input/retention bound, not a strict CPU or RSS guarantee.
 
 ## Explicit limitations
 
-This phase analyzes response headers only. It does not parse meta CSP, a document
+This analyzer handles response headers only. It does not parse meta CSP, a document
 body or DOM; match concrete resource URLs; inspect report endpoints; simulate a
 browser or violation; intersect arbitrary source sets across multiple enforced
 policies; prove nonce entropy/uniqueness/reuse; or prove XSS or clickjacking. It
 does not implement CORS.
 
 Normative reference: [CSP Level 3 Editor's Draft (2026-09-16)](https://w3c.github.io/webappsec-csp/).
-# Phase 11 consumer
+## Finding engine consumer
 
 The [finding engine](finding-engine.md) consumes complete applicable HTML CSP
 observations. Unsafe source findings describe one non-truncated enforced policy;

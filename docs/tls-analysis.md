@@ -1,4 +1,4 @@
-# TLS analysis — Phase 5
+# TLS analysis
 
 `Response.TLSAnalysis()` exposes evidence from the existing TLS connection.
 `tlsanalysis.Capture(state, err, scanTime)` is pure: no sockets, DNS, trust-store
@@ -63,14 +63,14 @@ messages to 64 KiB and Certificate messages to 256 KiB (`crypto/tls/common.go` a
 An accepted fixture with 300 SANs and 20 presented certificates verifies summary
 caps. This is not a strict memory benchmark or exhaustive malicious ASN.1 audit.
 
-Windows/macOS/iOS still require an explicit CA PEM pool, preserving the Phase 4
+Windows/macOS/iOS still require an explicit CA PEM pool, preserving the
 protection against native certificate-chain network retrieval. Linux trust-store
 behavior was not exercised in this Windows run. RevocationChecked is always false.
 
 Sources: [Go TLS verification error](https://pkg.go.dev/crypto/tls#CertificateVerificationError),
 [Go X.509 certificate fields](https://pkg.go.dev/crypto/x509#Certificate), and the
 bundled runtime source. No new dependencies were introduced.
-# Phase 11 consumer
+## Finding engine consumer
 
 The [finding engine](finding-engine.md) emits an informational expiring-soon
 finding only for a verified, untruncated presented leaf on a verified HTTPS

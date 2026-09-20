@@ -33,7 +33,7 @@ whole. The lack of public-only fallback intentionally sacrifices availability.
 | Secret in debug/error | Origin-only display, no raw causes | TestTargetPrivacy, TestBoundaryPrivacy, TestFaultPrivacy |
 | Alternate socket API | Source ownership guard + review | TestSocketOwnership |
 
-Phase 10 adds an opt-in redirect journey. `TraceRedirects` parses each next
+The opt-in redirect journey, `TraceRedirects`, parses each next
 target, blocks HTTPS-to-HTTP downgrades before dialing, and routes each
 permitted hop through a fresh approval and verified peer. Default boundary
 policy permits public cross-host targets; private opt-in forces SameHost, and
@@ -62,7 +62,7 @@ service is the permitted scope.
   impossible. Unsafe, reflective corruption or adding independent network imports
   is outside capability enforcement and must be caught by review/tooling.
 - Context cancellation after successful ownership transfer does not close the
-  returned socket. The Phase 4 protocol operation supplies deadlines and closure.
+  returned socket. The HTTP protocol operation supplies deadlines and closure.
 - Go statement coverage is not branch coverage. Race testing was attempted but
   cannot run on this host without a cgo-compatible C compiler.
 

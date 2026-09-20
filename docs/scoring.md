@@ -1,8 +1,8 @@
-# Configuration Score — Phase 12
+# Configuration Score
 
 `internal/core/scoring.Evaluate(primary)` calculates a bounded,
 deterministic score from **one already captured primary response**. It calls
-the Phase 11 finding engine for that same response. It does not make requests,
+the finding engine for that same response. It does not make requests,
 read files or use the current clock. The scanner chooses and records
 which response is primary. CORS probes, redirect journeys, other paths and
 authenticated behavior are outside this score and remain visible separately

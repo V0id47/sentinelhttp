@@ -29,4 +29,5 @@ HTTP dial path. No performance claim, native-root exporter or cert management.
 
 Evidence: Host/SNI, proxy traps, malformed Location, body/header limits, slow/raw
 responses, cancellation/closure, AIA trap and strict TLS fixtures. Race detection
-remains unverified locally due missing gcc/cgo. See http-client.md and phase4-report.md.
+remains unverified locally due missing gcc/cgo; Linux CI runs the race gate.
+See [HTTP client](../http-client.md) and the [release-readiness matrix](../release-readiness.md).

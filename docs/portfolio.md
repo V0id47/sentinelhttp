@@ -34,7 +34,7 @@ after use. Findings are configuration observations, not proof of exploitation.
 
 **Evidence.** Local fixtures and fake DNS/dialers exercise scope decisions,
 timeouts, hostile HTTP, privacy projections and output escaping without
-scanning public targets. Phase 19 added parser fuzzing and a browser check
+scanning public targets. Parser fuzzing and a browser check
 with injected markup rendered as text. The release gate recorded 342 passing
 top-level Go tests across 17 packages, 87.6% weighted statement coverage,
 zero findings from point-in-time npm and Go vulnerability audits, and a
@@ -50,6 +50,6 @@ authenticated scanning, crawling and exploit claims.
 
 The [architecture self-review](architecture-self-review.md) records concrete
 risks found and resolved during development. The [threat model](threat-model.md)
-and [release report](phase22-report.md) contain the detailed decisions and
-gate evidence. [Dashboard screenshots](screenshots.md) and the
+records detailed decisions, while the [release-readiness matrix](release-readiness.md)
+records gate evidence. [Dashboard screenshots](screenshots.md) and the
 [interview review](interview-review.md) use local synthetic evidence.

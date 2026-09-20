@@ -1,4 +1,4 @@
-# Versioned report boundary (Phase 13)
+# Versioned report boundary
 
 `internal/core/reporting` is the shared, I/O-free evidence boundary for the
 CLI, diff engine and dashboard. `Build` accepts only already captured

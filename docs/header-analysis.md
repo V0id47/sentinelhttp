@@ -1,4 +1,4 @@
-# Response header analysis — Phase 6
+# Response header analysis
 
 Implemented 2026-09-18 in `internal/core/headeranalysis`. The package is pure and
 deterministic: it performs no DNS, socket, file or clock I/O. It analyzes the
@@ -21,7 +21,7 @@ Context is kept separate from parsing:
 - CSP, Permissions-Policy and XFO are applicable to HTML here. COOP and COEP also
   require a known trustworthy context; plain HTTP remains conservatively unknown.
 - XCTO and CORP remain applicability-unknown because their effect depends on the
-  consuming fetch/resource context unavailable in this phase.
+  consuming fetch/resource context unavailable to this analyzer.
 
 Applicability does not rewrite parser status. For example, a syntactically valid
 COOP value on plain HTTP remains `valid` with applicability `unknown`.
@@ -32,16 +32,16 @@ Every complete capture returns ten results in fixed order. Status is one of:
 `absent`, `valid`, `invalid`, `ambiguous`, `ignored`, `observed`, `deferred`,
 `truncated` or `unrecognized`. `Effective` records only the field algorithm
 implemented here; it is not a vulnerability, browser guarantee or final finding.
-No severity or score is assigned in this phase.
+The header analyzer itself assigns no severity or score.
 
-| Header | Phase 6 interpretation |
+| Header | Interpretation |
 |---|---|
-| Content-Security-Policy | `observed` bounded header evidence. Detailed policy parsing, separate report-only processing and `frame-ancestors`/XFO correlation are provided by Phase 8 `cspanalysis`. |
+| Content-Security-Policy | `observed` bounded header evidence. Detailed policy parsing, separate report-only processing and `frame-ancestors`/XFO correlation are provided by `cspanalysis`. |
 | Strict-Transport-Security | First field only; unique directive names; required numeric max-age accepts token or quoted-string form; max-age=0 is inactive; includeSubDomains/preload recorded without claiming preload registration. |
 | X-Content-Type-Options | Browser first-token behavior; `nosniff` can be effective while a nonconforming combined field is invalid. |
 | Referrer-Policy | Last recognized standard token wins; unknown-only input is unrecognized. |
 | Permissions-Policy | RFC 9651 dictionary with direct Items or Inner Lists; Token/String allowlist entries retain their type; Strings are checked against the CSP scheme-source/host-source grammar; unsupported items are ignored per field rules; a repeated key uses the last member and is marked repeated. Feature support/default allowlists are not inferred. |
-| X-Frame-Options | Current HTML set processing for DENY/SAMEORIGIN and conflicting/repeated fields. Phase 8 consumes this normalized result for observed CSP `frame-ancestors` precedence; it does not make a clickjacking finding. |
+| X-Frame-Options | Current HTML set processing for DENY/SAMEORIGIN and conflicting/repeated fields. `cspanalysis` consumes this normalized result for observed CSP `frame-ancestors` precedence; it does not make a clickjacking finding. |
 | Cross-Origin-Opener-Policy | One Structured Fields token plus valid parameters; invalid/unknown values have effective fallback `unsafe-none`. |
 | Cross-Origin-Resource-Policy | One exact case-sensitive `same-origin`, `same-site` or `cross-origin` token. |
 | Cross-Origin-Embedder-Policy | One Structured Fields token; invalid/unknown values have effective fallback `unsafe-none`. |
@@ -77,15 +77,15 @@ The analysis is captured immediately after response headers and before body read
 Thus a premature body close still returns header results. It does not inspect or
 sniff body bytes and cannot upgrade an unknown Content-Type context.
 
-## Phase 8 boundary, deferred work and references
+## CSP boundary and references
 
-The generic report remains the bounded raw-header/context source for Phase 8. Its
+The generic report is the bounded raw-header/context source for CSP analysis. Its
 `Values(ContentSecurityPolicy)` accessor can expose retained enforced CSP fields
 and is sensitive/untrusted; it does not add a report-only CSP accessor. It neither
 merges policies nor performs CSP semantics. The dedicated report is obtained via
 `Response.CSPAnalysis()` and is documented in [CSP analysis](csp-analysis.md).
-Findings, contextual severities and score contribution remain deferred to their
-catalog/reporting phases. Absence of Permissions-Policy, COOP, CORP or COEP is not
+The finding engine and score consume selected analyzed evidence separately.
+Absence of Permissions-Policy, COOP, CORP or COEP is not
 treated as a universal weakness.
 
 Normative bases: [RFC 6797](https://www.rfc-editor.org/rfc/rfc6797),
@@ -94,7 +94,7 @@ Normative bases: [RFC 6797](https://www.rfc-editor.org/rfc/rfc6797),
 [HTML](https://html.spec.whatwg.org/),
 [Referrer Policy](https://www.w3.org/TR/referrer-policy/) and
 [Permissions Policy](https://www.w3.org/TR/permissions-policy-1/).
-# Phase 11 consumer
+## Finding engine consumer
 
 The [finding engine](finding-engine.md) consumes only complete, applicable HSTS
 and nosniff results. It does not reinterpret raw header values or promote a

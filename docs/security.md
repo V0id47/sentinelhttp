@@ -45,6 +45,6 @@ as unknown instead of inventing a resolved finding.
 
 See the [detailed threat model](threat-model.md), [SSRF model](ssrf-model.md),
 [architecture self-review](architecture-self-review.md) and
-[Phase 20 audit](phase20-report.md). Report suspected security defects through
+[release-readiness matrix](release-readiness.md). Report suspected security defects through
 the GitHub repository's private vulnerability reporting feature when available;
 do not include real target reports or credentials in a public issue.

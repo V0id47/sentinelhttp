@@ -14,15 +14,15 @@ Gitleaks. Checks use local synthetic fixtures, not public targets.
 | Conservative diff | PASS locally | [Diff contract](diff.md); root-only identity and unknown cases remain intentional |
 | Local dashboard and four locales | PASS locally | 1366 px desktop and 390 px mobile Overview/Diff visual checks; mobile body width stayed within viewport; [screenshots](screenshots.md) and [localization](i18n.md) |
 | Reproducible frontend/catalog artifacts | PASS locally | Five generated files matched SHA-256 before/after regeneration; CI rejects drift |
-| Dependency and workflow audit | PASS locally | Phase 20 `npm audit` zero known vulnerabilities, `govulncheck` none found, actionlint exit 0; [hardening report](phase20-report.md) |
-| Documentation | PASS locally | Four READMEs, install/development/security/case study, [interview review](interview-review.md), screenshot gallery and release notes; 144 valid local links across 56 published Markdown files |
-| Frontend lint and Git history secrets | PASS | ESLint with TypeScript 6.0.3 passed; local Gitleaks v8.30.1 scanned 3 commits (~1.68 MB), no leaks; CI run 35505265003 passed both |
+| Dependency and workflow audit | PASS | `npm audit` found zero known vulnerabilities, `govulncheck` found none, and actionlint exited 0; [security limits](security.md) |
+| Documentation | PASS locally | Four READMEs, install/development/security/case study, [interview review](interview-review.md), screenshot gallery and release notes; 154 valid local links across 33 published Markdown files |
+| Frontend lint and Git history secrets | PASS | ESLint with TypeScript 6.0.3 passed; local Gitleaks v8.30.1 scanned 3 commits (~1.68 MB), no leaks; [tag CI run 35505499661](https://github.com/V0id47/sentinelhttp/actions/runs/35505499661) scanned 4 commits with no leaks |
 | Go race detector on Linux | PASS | CI run 35505265003 completed successfully, including `go test -race` on the 17 project packages; local Windows lacks `gcc` |
 | Reviewed public Git file set | PASS | 203-file initial commit reviewed before push; no caches, reports, private keys, `.env` files or local plans; common secret-pattern scan found no matches |
 | Clean checkout | PASS | Local clone of the committed tree: lockfile `npm ci`, Go tests, docs link check and regenerated catalog/assets with zero Git diff |
-| GitHub publication | PASS | Public [repository](https://github.com/V0id47/sentinelhttp) on `main`; code-bearing commit and green CI linked above |
+| GitHub publication | PASS | Public [repository](https://github.com/V0id47/sentinelhttp) on `main`; published [v0.1.0 release](https://github.com/V0id47/sentinelhttp/releases/tag/v0.1.0) and green tag CI linked above |
 
-The local Phase 21 gate recorded 342 top-level Go tests across 17 packages,
+The local release gate recorded 342 top-level Go tests across 17 packages,
 848 pass events, zero fail/skip and 87.6% weighted Go statement coverage.
 Coverage is not a security guarantee. A successful report or score covers only
 the operations actually performed; validation does not attest report origin.

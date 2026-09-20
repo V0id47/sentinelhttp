@@ -60,8 +60,7 @@ used as release evidence.
 
 ## Release verdict
 
-The [release readiness matrix](release-readiness.md) and
-[Phase 22 report](phase22-report.md) record a clean clone, local gate, visual
+The [release readiness matrix](release-readiness.md) records a clean clone, local gate, visual
 checks and the published Linux CI run. The architecture is suitable for a
 bounded, authorization-first portfolio tool at v0.1.0. Its conclusions remain
 configuration observations over collected evidence, not comprehensive

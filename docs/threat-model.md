@@ -1,13 +1,14 @@
-# Implemented transport and analysis threat model — through Phase 21
+# Implemented transport and analysis threat model
 
 Assets: operator/private services, approved connections, bounded resources,
-URL/header/body secrets and correct evidence. See ssrf-model.md for Phase 3.
+URL/header/body secrets and correct evidence. See the [SSRF model](ssrf-model.md)
+for the network boundary.
 
 | Threat | Control | Evidence / limit |
 |---|---|---|
 | Malicious HTTP | net/http parser, safe error codes | Raw invalid fixtures; stdlib grammar tolerance remains |
 | Proxy scope escape | Proxy=nil | HTTP/HTTPS traps see zero requests |
-| Redirect to private host | RoundTrip only | Private/malformed redirects preserve one exchange |
+| Redirect to private host | No implicit redirects; optional trace validates each next target before dialing | Private/malformed redirects cannot trigger an unapproved follow-up |
 | Large body / lying length | max+1 limited reader, no length-based allocation | Fixed/chunked/exact-bound/huge-length cases |
 | Large headers | Explicit initial-header byte cap | Raw oversized fixture; no separate count cap |
 | Slow headers/body/TLS | Layered contexts, deadline, cancellation close | Stalling fixtures and observed closure |
@@ -74,9 +75,9 @@ URL/header/body secrets and correct evidence. See ssrf-model.md for Phase 3.
 | Malicious report text in browser | React text rendering, no report-controlled links, fixed routes | Browser adversarial fixture and source review |
 | Catalog translation confusion | Match rule ID, version and complete canonical prose; translate known limitations only | Altered-prose browser and Go tests; visible fallback |
 | Language-dependent evidence drift | Canonical JSON and protocol tokens stay unchanged across locales | Locale CLI tests and catalog audit |
-| Generated frontend/catalog drift | CI rebuilds both catalogs and embedded assets and requires a clean generated diff | Local SHA-256 repeatability and actionlint; CI run pending |
-| Dependency vulnerabilities | Pinned Go and npm manifests plus online npm and govulncheck audits in CI | Phase 20 point-in-time audits found none; future advisories remain possible |
-| Operator misreads scope or local exposure | Four language READMEs and focused security/install guides state authorization, CA, report privacy, score and dashboard limits | Phase 21 link/command checks; documentation does not enforce behavior |
+| Generated frontend/catalog drift | CI rebuilds both catalogs and embedded assets and requires a clean generated diff | Local SHA-256 repeatability, actionlint and [green release CI](https://github.com/V0id47/sentinelhttp/actions/runs/35505499661) |
+| Dependency vulnerabilities | Pinned Go and npm manifests plus online npm and govulncheck audits in CI | Point-in-time audits found none; future advisories remain possible |
+| Operator misreads scope or local exposure | Four language READMEs and focused security/install guides state authorization, CA, report privacy, score and dashboard limits | Link and command checks; documentation does not enforce behavior |
 
 Boundary, Go runtime and OS remain trusted. Peer equality cannot attest routing
 behind NAT/VPN/translation. Types/source guards do not sandbox malicious Go code.
@@ -87,17 +88,17 @@ retained. Revocation is not assessed; CA-bundle maintenance is the operator's du
 No authenticated requests are implemented. The CLI's scan
 orchestration is serial and bounded; output files may still contain sensitive
 host/certificate/cookie-name metadata and require local file protection.
-The Phase 13 report is a bounded snapshot of admitted evidence; it does not
+The versioned report is a bounded snapshot of admitted evidence; it does not
 attest who captured it. Certificate text and normalized analyzer strings that
 appear in the document remain potentially sensitive and untrusted.
-Phase 12 scores only one captured response and exposes its evidence coverage.
+The Configuration Score evaluates one captured response and exposes its evidence coverage.
 The diff retains only a coarse root-or-redacted target scope. Redacted paths
 and queries cannot be matched automatically, while even root reports remain
 sensitive local artifacts. Reports make no authenticity claim.
 The local dashboard is unauthenticated; another process on the operator's
 machine can reach its loopback port during a session. The UI must not imply
 that report validation proves source authenticity.
-Phase 11 findings describe individual captured evidence with
+Findings describe individual captured evidence with
 conservative confidence; they do not attest site-wide state or source
 authenticity. CORS probes sample only two fixed origins and one preflight; they
 do not execute a browser or establish exploitability. Redirect tracing follows

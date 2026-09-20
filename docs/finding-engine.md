@@ -1,11 +1,11 @@
-# Finding engine — Phase 11
+# Finding engine
 
 `internal/core/findingengine` converts already captured HTTP evidence into a
 bounded, versioned `Report`. `Evaluate(Input)` is pure: it performs no DNS,
 network or file I/O and never initiates a probe or redirect journey. Callers
 provide any ordinary exchanges, an optional redirect trace and an optional
-CORS probe result. There is no scan orchestrator, CLI, score or rendered report
-in this phase.
+CORS probe result. The engine performs no scan orchestration, scoring or
+rendering; those are separate consumers.
 
 ```go
 report := findingengine.Evaluate(findingengine.Input{
@@ -86,12 +86,12 @@ hex digits. Evidence references contain only opaque IDs, fixed codes and
 numeric indexes. Default JSON and formatting do not contain raw path, query,
 fragment, Location, header or cookie value, cookie name, certificate text,
 CSP source or raw error. Static catalog prose and URLs are reviewed with each
-rule version. A later HTML or Markdown renderer must still escape output for
+rule version. HTML and Markdown renderers must still escape output for
 its context.
 
 Input response, trace and probe structs are caller-owned. Validation cannot
 attest their provenance and callers must not mutate them concurrently with
 evaluation. The returned report and nested slices are owned by the caller.
 The engine never sends credentials, executes a browser or validates an exploit.
-Future orchestrators should preserve the distinction between observed evidence
+Consumers must preserve the distinction between observed evidence
 and a site-wide or authenticated security conclusion.

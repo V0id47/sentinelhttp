@@ -1,6 +1,6 @@
 # ADR 0004 — Approval capability and conservative network scope
 
-Status: implemented for Phase 3, 2026-09-13.
+Status: implemented, 2026-09-13.
 
 ## Decision
 
@@ -30,7 +30,7 @@ globally routable special assignments and noncanonical numeric targets. No PSL.
 ## Consequences and design refinements
 
 Separate logical host for DNS/HTTP/TLS from literal socket address. Retries and
-future redirects require new approvals. No happy-eyeballs/fallback this phase.
+redirects require new approvals. There is no happy-eyeballs/fallback path.
 The raw request URL is accessible only by an explicitly sensitive accessor;
 default display removes path and whole query, stronger than the initial design's
 query-values-only suggestion. This loses display detail but reduces secret exposure.
@@ -40,5 +40,5 @@ review enforce the intended source architecture; future transport additions must
 preserve it. Successful connections transfer ownership to the caller.
 
 Validation: offline fake DNS/dialer, real loopback fixture with explicit opt-in,
-token-copy/concurrent replay tests, peer cleanup tests, fuzz invariants and the
-Phase 3 report. No HTTP/TLS implementation or next-phase features added.
+token-copy/concurrent replay tests, peer cleanup tests and fuzz invariants.
+The HTTP client and optional redirect trace consume this boundary.

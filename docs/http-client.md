@@ -1,8 +1,8 @@
-# Secure HTTP client — Phase 4
+# Secure HTTP client
 
-Implemented 2026-09-16 in `internal/core/httpclient`. The transport still owns
-one exchange per call; later phases added analyses and an explicit redirect
-journey. No scanner, CLI or findings engine is implemented.
+`internal/core/httpclient` owns one bounded exchange per call. The CLI
+coordinates scans, while analyzers and the finding engine consume its captured
+evidence. Redirect tracing is an explicit operation above the one-exchange path.
 
 ## API and ownership
 
@@ -120,7 +120,7 @@ one, tls_ca_bundle_required is returned before approval/dial. Native certificate
 verification can retrieve AIA/root material outside Boundary. The bundled Go
 Windows implementation calls CertGetCertificateChain without cache-only/AIA-disable
 flags. This is a fail-closed usability limitation, not relaxed verification.
-Linux uses local Go system-root behavior with no bundle; the Phase 20 Linux CI
+Linux uses local Go system-root behavior with no bundle; the Linux CI
 build and race gate is the release validation. No native-store exporter, public
 bundle download or certificate manager was added.
 
@@ -138,8 +138,8 @@ metadata. No issuer, SAN, expiration or cipher assessment.
 
 ConnectionAttempts counts invocation of Boundary.Dial, not proof of a socket;
 RequestAttempts counts invocation of RoundTrip, not proof of server receipt.
-Both are at most one. Future orchestration reserves its budget before Do and
-aggregates outcomes; there is no global counter or scan budget engine.
+Both are at most one. The CLI reserves its scan budget before Do and
+aggregates outcomes; the HTTP client has no global counter.
 
 Private transient http.Header retains repeated values, including separate
 Set-Cookie entries. HeaderValues returns copies with case-insensitive lookup.
@@ -158,14 +158,14 @@ All header values are omitted by default, even unknown headers. The sensitivity
 catalog additionally marks Authorization, Proxy-Authorization, Cookie, Set-Cookie,
 X-API-Key, Api-Key, X-Auth-Token, X-Access-Token and authentication-info variants.
 
-Phase 6 adds `HeaderAnalysis()`. It returns a deep copy of bounded results derived
+`HeaderAnalysis()` returns a deep copy of bounded results derived
 from the captured headers, and its explicit `Values` accessor exposes only the ten
 analyzed fields. The report is captured before body reading, so an incomplete body
 does not erase header evidence. Failures before response headers leave capture
 unavailable. Response JSON/fmt still excludes both the report and its values. See
 [header analysis](header-analysis.md) for context, status and field semantics.
 
-Phase 7 adds `CookieAnalysis()`. It returns a deep copy of bounded results captured
+`CookieAnalysis()` returns a deep copy of bounded results captured
 at the same pre-body point. The report retains no cookie/extension values and
 default Response output excludes it. Cookie names and effective paths/domains are
 explicit untrusted evidence. Default-path calculation receives `URL.EscapedPath`,
@@ -174,7 +174,7 @@ so encoded slashes keep their wire-visible path structure. The raw
 and remains sensitive. See [cookie analysis](cookie-analysis.md) for the RFC model,
 PSL version, limits and inference semantics.
 
-Phase 8 adds `CSPAnalysis()`. At the same pre-body point, the client passes
+`CSPAnalysis()` is captured at the same pre-body point. The client passes
 separate `Content-Security-Policy` and `Content-Security-Policy-Report-Only` field
 sets, normalized document applicability and normalized XFO evidence to the pure
 `cspanalysis` package. It retains policy boundaries: several fields and
@@ -190,7 +190,7 @@ only. `HeaderValues` remains a sensitive raw-header accessor; it can expose eith
 CSP field family. See [CSP analysis](csp-analysis.md) for limits, source grammar,
 fallback chains and its non-finding boundary.
 
-Phase 9 adds `CORSAnalysis()`, a deep-copy accessor for bounded CORS evidence
+`CORSAnalysis()` is a deep-copy accessor for bounded CORS evidence
 captured at the same pre-body point. An ordinary `Do` sends no synthetic Origin;
 pre-header errors remain unavailable and later body errors retain the report.
 Default Response JSON/fmt omits it, while `HeaderValues` remains an explicit
@@ -200,7 +200,7 @@ overall timeout. It sends no credentials, reads no response body and follows no
 redirect. See [CORS analysis](cors-analysis.md) for request shapes, assessment
 limits and incomplete-attempt behavior.
 
-Phase 10 adds `TraceRedirects(ctx, target, options)` as a separate GET-only,
+`TraceRedirects(ctx, target, options)` is a separate GET-only,
 header-only journey. It manually calls the same one-exchange path for every
 attempt and revalidates each destination through `Boundary`; `Do` itself never
 follows redirects. The returned ordered trace records each hop's safe metadata,

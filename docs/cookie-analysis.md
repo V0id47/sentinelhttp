@@ -1,4 +1,4 @@
-# Cookie analysis — Phase 7
+# Cookie analysis
 
 Implemented 2026-09-18 in `internal/core/cookieanalysis`. The package is pure and
 deterministic: it performs no DNS, socket, file or clock I/O. `httpclient` supplies
@@ -122,10 +122,10 @@ an incomplete body does not erase cookie evidence.
 
 ## Scope and references
 
-This phase adds no cookie jar, request Cookie header, cross-response replacement,
-browser execution, findings, severity or score. It does not treat a session-like
+The analyzer has no cookie jar, request Cookie header, cross-response replacement
+or browser execution. It does not treat a session-like
 name as authentication or a broad Domain as a compromised subdomain. Partitioned
-and other extensions are recorded only by sanitized attribute name in this phase.
+and other extensions are recorded only by sanitized attribute name.
 
 The processing model is pinned to
 [draft-ietf-httpbis-rfc6265bis-22](https://datatracker.ietf.org/doc/draft-ietf-httpbis-rfc6265bis/22/),
@@ -133,8 +133,9 @@ an active Internet-Draft in the RFC Editor queue as of this implementation. Doma
 scope uses `golang.org/x/net/publicsuffix` v0.59.0, whose compiled PSL identifies
 publicsuffix.org revision `d6c92f1bbb7433e5db7b8405c25d4035fb8ff376`
 (2026-02-06). A dependency update can therefore change future PSL classifications
-and must be recorded with scan/rule provenance by later reporting phases.
-# Phase 11 consumer
+and must be considered when comparing reports across dependency updates.
+
+## Finding engine consumer
 
 The [finding engine](finding-engine.md) uses accepted, valid, untruncated,
 non-repeated cookies with the explicitly limited session-like heuristic. It

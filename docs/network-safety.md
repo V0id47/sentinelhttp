@@ -114,23 +114,22 @@ to extract secrets. Reporting uses its own narrow explicit projection.
 
 Fault.Error returns only a stable Code. Distinct DNS not-found, temporary, timeout,
 empty-answer and generic failures are retained; arbitrary internal error text is
-discarded. No Unwrap exposes resolver strings. Localization will map these codes
-later; no CLI or translation catalog is implemented in Phase 3.
+discarded. No Unwrap exposes resolver strings. The presentation layer
+localizes fixed codes without exposing resolver text.
 
-## Phase 4 integration
+## HTTP client integration
 
 The implemented httpclient uses Boundary.Approve and Boundary.Dial for every call.
 Its transport cannot resolve/dial independently: callbacks lease one existing
 verified socket. No proxy environment, connection reuse, retry, failover or redirect
-following. Production Boundary logic is unchanged from Phase 3; only its source
-ownership test was extended to recognize the reviewed adapter.
+following. The source-ownership test recognizes the reviewed adapter.
 
 HTTPS uses logical TLS identity and strict verification. Windows/macOS/iOS require
 explicit CA PEM to prevent native verifier AIA/root retrieval outside Boundary.
 HTTP body/header limits and protocol lifetime cancellation are described in
 http-client.md; they do not change IP classification or allow_private semantics.
 
-## Phase 10 redirect integration
+## Redirect integration
 
 `TraceRedirects` validates a proposed next target through `ParseTarget` and
 then repeats `Boundary.Approve` and `Boundary.Dial` for each permitted hop.

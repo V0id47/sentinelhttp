@@ -1,4 +1,4 @@
-# Redirect analysis — Phase 10
+# Redirect analysis
 
 `Client.TraceRedirects(ctx, target, options)` explicitly follows a bounded GET
 journey and returns an ordered trace. Ordinary `Client.Do` still performs one
@@ -76,13 +76,13 @@ to retrieve the raw field and must be handled as untrusted, potentially
 sensitive text. Default trace JSON and formatting reveal no path, query,
 fragment or raw Location. The caller owns the returned trace and slices.
 
-Phase 10 emits observations for cross-host or scheme changes and blocked
-downgrades, not findings, severities, scores or proof of exploitability. It
+The trace emits observations for cross-host or scheme changes and blocked
+downgrades, not proof of exploitability. It
 does not execute a browser, parse HTML or JavaScript redirects, issue
 authenticated requests, inspect response bodies, perform arbitrary method
 rewriting or inherit browser fragments. The CLI exposes the opt-in trace with
 `--trace-redirects`, `--max-redirects` and `--same-host`.
-# Phase 11 consumer
+## Finding engine consumer
 
 The [finding engine](finding-engine.md) examines bounded terminal trace evidence
 for a proposed HTTPS downgrade or exact loop/limit stop. It does not follow any

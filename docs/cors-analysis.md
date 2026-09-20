@@ -1,4 +1,4 @@
-# CORS analysis — Phase 9
+# CORS analysis
 
 SentinelHTTP records CORS response evidence without interpreting a permissive
 header as proof of data exposure. The implementation follows the
@@ -86,11 +86,11 @@ not require this signal. The narrow cache predicate may miss other cacheable
 responses, but avoids inferring cache exposure from headers alone.
 
 The classification vocabulary is `observation`, `misconfiguration` and
-`potential_risk`. This phase has no `confirmed_exposure`, finding, severity,
-score, browser execution, authenticated request, sensitive-data analysis or
-cross-resource/redirect-chain conclusion. The later CLI exposes the opt-in
+`potential_risk`. The analyzer has no `confirmed_exposure`, browser
+execution, authenticated request, sensitive-data analysis or
+cross-resource/redirect-chain conclusion. The CLI exposes the opt-in
 operation as `--probe-cors`.
-# Phase 11 consumer
+## Finding engine consumer
 
 The [finding engine](finding-engine.md) rebuilds probe samples from matching
 captured attempts and reruns the pure assessment. It emits only two conditional
